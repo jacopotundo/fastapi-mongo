@@ -1,0 +1,61 @@
+# ─────────────────────────────────────────────────────────────
+# .dockerignore per Warehouse API
+# ─────────────────────────────────────────────────────────────
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# Ambiente virtuale (NON copiare nel container!)
+venv/
+env/
+.venv/
+factoryvenv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.docker/
+
+# Environment files (NON copiare .env locale!)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Test e copertura
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentazione
+docs/_build/
+*.md
+!requirements.txt
+
+# Log
+*.log
+
+# Database locale (se esiste)
+*.mongodump/
+
+# Note personali
+infoimportanti.md
+fileMD/

@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7-jammy
+    container_name: warehouse-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - warehouse-network
+
+  # FastAPI Application (Warehouse API)
+  warehouse-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: warehouse-api
+    ports:
+      - "8000:8000"
+    environment:
+      # MongoDB
+      MONGODB_URL: mongodb://admin:1234@mongodb:27017
+      DATABASE_NAME: warehouse_dev
+      # Application
+      APP_NAME: Warehouse API
+      API_V1_STR: /api/v1
+      DEBUG: "True"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - warehouse-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Volumi
+volumes:
+  mongo_data:
+    driver: local
+
+  # Reti
+networks:
+  warehouse-network:
+    driver: bridge
