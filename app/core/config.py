@@ -10,8 +10,8 @@ class Settings(BaseSettings):
     )
     
     # MongoDB
-    MONGODB_URL: str = "mongodb://localhost:27017"
-    DATABASE_NAME: str = "warehouse_dev"
+    MONGODB_URL: str
+    DATABASE_NAME: str
     
     # Application
     APP_NAME: str = "Warehouse API"
@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     
     # JWT (placeholder per dopo)
-    JWT_SECRET_KEY: str = "change-me-in-production"
-    JWT_ALGORITHM: str = "HS256"
+    # JWT_SECRET_KEY: str = "change-me-in-production"
+    # JWT_ALGORITHM: str = "HS256"
     
     @property
     def database_url(self) -> str:

@@ -6,6 +6,8 @@ from app.core.database import Database
 from app.routers import health_router
 from app.routers.api.v1 import router
 
+from fastapi.middleware.cors import CORSMiddleware
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await Database.connect()  # ← Connette ALL'AVVIO
@@ -29,4 +31,10 @@ app.include_router(
     tags = ["Health Check"]
 )
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # O metti l'URL specifico del tuo frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
